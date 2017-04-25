@@ -39,6 +39,7 @@ defmodule HackerNews do
           url: href,
           service: "hackernews",
           author: "hackernews",
+          source: "https://news.ycombinator.com/",
         }
       end)
   end

@@ -28,7 +28,7 @@ defmodule HackerNews do
   """
 
   def get_main_page() do
-    hn_page = Bacon.Scrape.request_page(:hn, "https://news.ycombinator.com/newest")
+    hn_page = Bacon.Scrape.request_page(:hn, "https://news.ycombinator.com/newest", 10*1000)
     Floki.find(hn_page, ".athing")
       |> Enum.map(fn news_item ->
         link = Floki.find(news_item, ".storylink")

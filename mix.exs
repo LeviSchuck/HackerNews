@@ -33,7 +33,7 @@ defmodule HackerNews.Mixfile do
       {:gproc, "~> 0.5"},
       {:floki, "~> 0.17.0"},
       {:httpoison, "~> 0.11.1"},
-      {:slow_scraper, github: "LeviSchuck/SlowScraper", branch: "master"},
+      {:slow_scraper, github: "LeviSchuck/SlowScraper", branch: :master},
     ]
   end
 end

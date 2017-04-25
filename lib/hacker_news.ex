@@ -59,6 +59,7 @@ defmodule HackerNews.Client do
   end
 
   defp name(key), do: {:n, :l, {__MODULE__, key}}
+  def whereis(key), do: :gproc.whereis_name(name(key))
 
   def start_link(key, bot, client_id) do
     name = {:via, :gproc, name(key)}

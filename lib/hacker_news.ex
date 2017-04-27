@@ -1,34 +1,18 @@
-defmodule HackerNews.Application do
-  use Application
-  require Logger
-
-  def start(_type, _args) do
-    import Supervisor.Spec, warn: false
-
-    # Define workers and child supervisors to be supervised
-    children = [
-      # Starts a worker by calling: KVServer.Worker.start_link(arg1, arg2, arg3)
-      # worker(KVServer.Worker, [arg1, arg2, arg3]),
-    ]
-
-    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one]
-
-    headers_from_config = ["Referer": "https://news.ycombinator.com/"]
-    Bacon.Scrape.add_client(:hn, headers_from_config, HackerNews.HTTP)
-    Logger.info("Bacon scrape client added")
-    Supervisor.start_link(children, opts)
-  end
-end
-
 defmodule HackerNews do
   @moduledoc """
   Documentation for HackerNews.
   """
 
-  def get_main_page() do
-    hn_page = Bacon.Scrape.request_page(:hn, "https://news.ycombinator.com/newest", 10*1000)
+  def get_newest_page() do
+    SlowScraper.request_page(:hn, "https://news.ycombinator.com/newest", 10_000)
+      |> parse_news_page()
+  end
+  def get_front_page() do
+    SlowScraper.request_page(:hn, "https://news.ycombinator.com/news", 10_000)
+      |> parse_news_page()
+  end
+
+  defp parse_news_page(hn_page) do
     Floki.find(hn_page, ".athing")
       |> Enum.map(fn news_item ->
         link = Floki.find(news_item, ".storylink")
@@ -42,6 +26,11 @@ defmodule HackerNews do
           source: "https://news.ycombinator.com/",
         }
       end)
+  end
+
+  def client_spec do
+    headers_from_config = ["Referer": "https://news.ycombinator.com/"]
+    SlowScraper.client_spec(:hn, headers_from_config, HackerNews.HTTP)
   end
 end
 

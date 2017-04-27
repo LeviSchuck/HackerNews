@@ -3,7 +3,7 @@ defmodule HackerNews.Mixfile do
 
   def project do
     [app: :hacker_news,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -15,8 +15,7 @@ defmodule HackerNews.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:gproc, :logger, :httpoison],
-    mod: {HackerNews.Application, []}]
+    [extra_applications: [:gproc, :logger, :httpoison]]
   end
 
   # Dependencies can be Hex packages:
